@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/context_delete"
+        android:icon="@drawable/ic_grid"
+        android:title="Удалить"/>
+    <item
+        android:id="@+id/context_number"
+        android:icon="@drawable/ic_list"
+        android:title="Частота" />
+    <item
+        android:id="@+id/context_info"
+        android:icon="@drawable/ic_settings"
+        android:title="Информация" />
+</menu>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "954937522557",
+    "firebase_url": "https://pharm-222921.firebaseio.com",
+    "project_id": "pharm-222921",
+    "storage_bucket": "pharm-222921.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954937522557:android:7dc6a42deb1d90cf",
+        "android_client_info": {
+          "package_name": "by.bsu.slabko.vladislav.pharmhelper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "954937522557-jcpapp261q23c58nn2g016unkv9ep96l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "by.bsu.slabko.vladislav.pharmhelper",
+            "certificate_hash": "6666759550b80af07d5688d252deb350c8fe22f2"
+          }
+        },
+        {
+          "client_id": "954937522557-is7f5etp9j2js4ltudkl80a4onaapp4i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtvhCLEEE1cx_Kqf6KdwKBptW1vd12Uxg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "954937522557-is7f5etp9j2js4ltudkl80a4onaapp4i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
