@@ -13,14 +13,72 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!--<android.support.v7.widget.Toolbar
+
+
+        <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
-            -->
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
+            <SearchView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:iconifiedByDefault="true"
+                android:tooltipText="Поиск"
+                app:actionViewClass="android.support.v7.widget.SearchView"
+                app:showAsAction="ifRoom|withText|collapseActionView" />
+        </android.support.v7.widget.Toolbar>
+
+        <TabHost
+            android:id="@android:id/tabhost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:id="@+id/change_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                </LinearLayout>
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    style="@style/Base.TextAppearance.AppCompat.Light.Widget.PopupMenu.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@android:color/white"
+
+                   >
+                </TabWidget>
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <fragment android:name="by.bsu.slabko.vladislav.pharmhelper.fragment.home.HomeFragment"
+                        android:id="@+id/fr1"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" />
+                    <fragment android:name="by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.PharmacySearchFragment"
+                        android:id="@+id/fr2"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" />
+                    <fragment android:name="by.bsu.slabko.vladislav.pharmhelper.fragment.userList.UserListFragment"
+                        android:id="@+id/fr3"
+                        android:layout_weight="3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent" />
+                </FrameLayout>
+            </RelativeLayout>
+        </TabHost>
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
@@ -33,5 +91,6 @@
         app:itemIconTint="@color/colorPrimaryDark"
         app:itemTextColor="@color/colorPrimaryDark"
         app:menu="@menu/drawer_view" />
+
 
 </android.support.v4.widget.DrawerLayout>

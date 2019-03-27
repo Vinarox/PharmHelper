@@ -8,6 +8,10 @@ public class Constants {
     public static Fragment currentFragment = null;
     public static String currentFragmentName = "";
 
+    public static final String FRAGMENT_HOME = "home";
+    public static final String FRAGMENT_SEARCH = "search";
+    public static final String FRAGMENT_USER_LIST = "userList";
+
     public static final String fragmentDesktopName = "nav_desk";
     public static final String fragmentListName = "nav_list";
     public static final String fragmentGridName = "nav_grid";

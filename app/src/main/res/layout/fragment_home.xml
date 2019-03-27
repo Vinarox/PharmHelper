@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="6sp">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <GridView
+        android:id="@+id/grid_slot"
+        android:layout_width="match_parent"
+        android:layout_height="120sp"
+        android:layout_margin="6sp"
+        android:numColumns="2"
+        android:verticalSpacing="20sp"
+        android:horizontalSpacing="14sp"
+        android:background="@color/colorAccent">
+    </GridView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:id="@+id/user_cabinet"
+        android:layout_width="200sp"
+        android:layout_height="90sp"
+        android:layout_margin="6sp"
+        android:background="@color/colorAccent">
+    </LinearLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scroll_pharm_near"
+        android:layout_width="match_parent"
+        android:layout_height="160sp"
+        android:layout_margin="6sp"
+        android:background="@color/colorAccent">
+        <HorizontalScrollView
+            android:id="@+id/hscroll_pharm_near"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/linear_pharm_near"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            </LinearLayout>
+        </HorizontalScrollView>
+    </ScrollView>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scroll_promotions"
+        android:layout_width="match_parent"
+        android:layout_height="200sp"
+        android:layout_margin="6sp"
+        android:background="@color/colorAccent">
+        <HorizontalScrollView
+            android:id="@+id/hscroll_promotions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/linear_promotions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            </LinearLayout>
+        </HorizontalScrollView>
+    </ScrollView>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scroll_medicine"
+        android:layout_width="match_parent"
+        android:layout_height="160sp"
+        android:layout_margin="6sp"
+        android:background="@color/colorAccent">
+        <HorizontalScrollView
+            android:id="@+id/hscroll_medicine"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <LinearLayout
+                android:id="@+id/linear_medicine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            </LinearLayout>
+        </HorizontalScrollView>
+    </ScrollView>
+</LinearLayout>
+</ScrollView>
