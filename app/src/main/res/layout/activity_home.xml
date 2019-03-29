@@ -2,7 +2,6 @@
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,26 +40,27 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:animateLayoutChanges="true"
+                    android:background="@android:color/white"></TabWidget>
                 <LinearLayout
                     android:id="@+id/change_frame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_above="@android:id/tabs">
                 </LinearLayout>
-                <TabWidget
-                    android:id="@android:id/tabs"
-                    style="@style/Base.TextAppearance.AppCompat.Light.Widget.PopupMenu.Small"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:background="@android:color/white"
 
-                   >
-                </TabWidget>
                 <FrameLayout
                     android:id="@android:id/tabcontent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_above="@android:id/tabs">
                     <fragment android:name="by.bsu.slabko.vladislav.pharmhelper.fragment.home.HomeFragment"
                         android:id="@+id/fr1"
                         android:layout_weight="1"

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import by.bsu.slabko.vladislav.pharmhelper.R;
 import by.bsu.slabko.vladislav.pharmhelper.activities.HomeActivity;
-import by.bsu.slabko.vladislav.pharmhelper.fragment.home.adaptors.GridAdapter;
+import by.bsu.slabko.vladislav.pharmhelper.fragment.home.adapters.GridAdapter;
 
 
 public class HomeFragment extends Fragment {
@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment {
         info_text = boxes[1].findViewById(R.id.info_text);
         info_text.setText("Обратная\nсвязь");
         mContext = HomeActivity.homeContext;
+
         mGridAdapter = new GridAdapter(mContext, boxes);
         gvMain.setAdapter(mGridAdapter);
 

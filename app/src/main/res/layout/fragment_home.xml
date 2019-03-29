@@ -17,8 +17,7 @@
         android:layout_margin="6sp"
         android:numColumns="2"
         android:verticalSpacing="20sp"
-        android:horizontalSpacing="14sp"
-        android:background="@color/colorAccent">
+        android:horizontalSpacing="14sp">
     </GridView>
 
     <LinearLayout
@@ -27,8 +26,7 @@
         android:id="@+id/user_cabinet"
         android:layout_width="200sp"
         android:layout_height="90sp"
-        android:layout_margin="6sp"
-        android:background="@color/colorAccent">
+        android:layout_margin="6sp">
     </LinearLayout>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,15 +35,28 @@
         android:layout_height="160sp"
         android:layout_margin="6sp"
         android:background="@color/colorAccent">
+
         <HorizontalScrollView
             android:id="@+id/hscroll_pharm_near"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:id="@+id/linear_pharm_near"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
+
+                <TextView
+                    style="@android:style/Widget.DeviceDefault.TextView.SpinnerItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Аптеки рядом"
+                    android:textSize="20dp"
+                    android:textStyle="bold|italic" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>
     </ScrollView>
@@ -65,6 +76,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
+
+                <TextView
+                    style="@android:style/Widget.DeviceDefault.TextView.SpinnerItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Акции"
+                    android:textSize="20dp"
+                    android:textStyle="bold|italic" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>
     </ScrollView>
@@ -84,6 +106,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
+
+                <TextView
+                    style="@android:style/Widget.DeviceDefault.TextView.SpinnerItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Популярные лекарства"
+                    android:textSize="20dp"
+                    android:textStyle="bold|italic" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>
     </ScrollView>

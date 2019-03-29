@@ -1,5 +1,6 @@
 package by.bsu.slabko.vladislav.pharmhelper.activities;
 
+import android.content.ContentProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -25,7 +26,10 @@ import by.bsu.slabko.vladislav.pharmhelper.activities.settings.SettingsActivity;
 import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.home.HomeFragment;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.PharmacySearchFragment;
+import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.objects.SearchLine;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.userList.UserListFragment;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class HomeActivity extends PreStartSettings {
     private NavigationView navigationView;
@@ -41,14 +45,21 @@ public class HomeActivity extends PreStartSettings {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        setTheme(R.style.DNAppTheme);
         super.onCreate(savedInstanceState);
-        super.onResume();
         homeContext = this;
+        //final Intent intn = new Intent();
+        //intn.setClass(this, ContentProvider.class);
+        //startActivity(intn);
+
+        super.onResume();
+        Fabric.with(this, new Crashlytics());
+
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        //getSupportActionBar().setDisplayShowTitleEnabled(true);
 
        // SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
        // int searchBarId = searchView.getContext().getResources().getIdentifier("android:id/search_bar", null, null);
@@ -118,6 +129,8 @@ public class HomeActivity extends PreStartSettings {
                         return true;
                     }
                 });
+        if(Constants.lines.size() == 0)
+            Constants.lines.add(new SearchLine(homeContext));
     }
 
 
