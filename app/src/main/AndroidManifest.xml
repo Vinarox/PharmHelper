@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="by.bsu.slabko.vladislav.pharmhelper">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_app_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_app_icon"
+        android:supportsRtl="true"
+        android:theme="@style/DNAppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <!--<activity android:name="by.bsu.slabko.vladislav.pharmhelper.database.MyContentProvider"></activity>-->
+        <activity android:name=".activities.settings.SettingsActivity" />
+        <activity
+            android:name=".activities.HomeActivity"
+            android:theme="@style/ThemeLauncher">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".PreStartSettings" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="4d7044e9cdc9ed2245c97884107309507d6b7f12" />
+
+        <provider
+            android:name=".database.MyContentProvider"
+            android:authorities="by.bsu.slabko.vladislav.pharmhelper.database.MyContentProvider"
+            android:exported="true"
+            android:readPermission="by.bsu.slabko.vladislav.pharmhelper.LAUNCHES_READ"
+            android:writePermission="by.bsu.slabko.vladislav.pharmhelper..LAUNCHES_WRITE" />
+
+    </application>
+
+</manifest>

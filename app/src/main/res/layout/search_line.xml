@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <EditText
+        android:id="@+id/input"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_margin="4sp"
+        android:layout_toLeftOf="@id/acces_button"
+        android:background="@drawable/circle"
+        android:maxLines="1"/>
+    <Button
+        android:id="@+id/acces_button"
+        android:layout_width="40sp"
+        android:layout_height="40sp"
+        android:layout_margin="4sp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_accept"/>
+
+</RelativeLayout>

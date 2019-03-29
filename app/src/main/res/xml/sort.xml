@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory
+        android:key="sorts"
+        android:title="@string/sort_type">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="check_no_sort"
+            android:title="Без сортировки"
+            android:checked="true">
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="check_date_sort"
+            android:title="По дате установки">
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="check_AZ_sort"
+            android:summary="A-Z"
+            android:title="В алфавитном порядке" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="check_ZA_sort"
+            android:title="В алфавитном порядке"
+            android:summary="Z-A" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
