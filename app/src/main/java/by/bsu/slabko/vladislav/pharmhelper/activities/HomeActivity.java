@@ -1,6 +1,5 @@
 package by.bsu.slabko.vladislav.pharmhelper.activities;
 
-import android.content.ContentProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -15,10 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
 
 import by.bsu.slabko.vladislav.pharmhelper.PreStartSettings;
 import by.bsu.slabko.vladislav.pharmhelper.R;
@@ -47,10 +48,9 @@ public class HomeActivity extends PreStartSettings {
     protected void onCreate(final Bundle savedInstanceState) {
         setTheme(R.style.DNAppTheme);
         super.onCreate(savedInstanceState);
+        AppCenter.start(getApplication(), "f484689c-80ff-42d3-9aa9-c395b757cd82",
+                Analytics.class, Crashes.class);
         homeContext = this;
-        //final Intent intn = new Intent();
-        //intn.setClass(this, ContentProvider.class);
-        //startActivity(intn);
 
         super.onResume();
         Fabric.with(this, new Crashlytics());
