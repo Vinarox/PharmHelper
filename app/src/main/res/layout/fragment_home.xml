@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="160sp"
         android:layout_margin="6sp"
-        android:background="@color/colorAccent">
+        android:background="@color/light_back">
 
         <HorizontalScrollView
             android:id="@+id/hscroll_pharm_near"
@@ -66,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="200sp"
         android:layout_margin="6sp"
-        android:background="@color/colorAccent">
+        android:background="@color/light_back">
         <HorizontalScrollView
             android:id="@+id/hscroll_promotions"
             android:layout_width="match_parent"
@@ -96,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="160sp"
         android:layout_margin="6sp"
-        android:background="@color/colorAccent">
+        android:background="@color/light_back">
         <HorizontalScrollView
             android:id="@+id/hscroll_medicine"
             android:layout_width="fill_parent"

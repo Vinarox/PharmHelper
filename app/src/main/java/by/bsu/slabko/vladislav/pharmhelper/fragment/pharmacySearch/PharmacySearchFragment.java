@@ -2,6 +2,7 @@ package by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -30,11 +31,14 @@ import java.util.List;
 
 import by.bsu.slabko.vladislav.pharmhelper.R;
 import by.bsu.slabko.vladislav.pharmhelper.activities.HomeActivity;
+import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.SearchResultActivity;
 import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 import by.bsu.slabko.vladislav.pharmhelper.database.MedicineEntity;
 import by.bsu.slabko.vladislav.pharmhelper.database.MyContentProvider;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.adapters.ItemSearchListAdapter;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.objects.SearchLine;
+import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMedicineEntity;
+import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMyContentProvider;
 
 
 public class PharmacySearchFragment extends Fragment {
@@ -45,8 +49,7 @@ public class PharmacySearchFragment extends Fragment {
     private static Context mContext = HomeActivity.homeContext;
 
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference myRef;
+
 
     public PharmacySearchFragment() {
         // Required empty public constructor
@@ -63,9 +66,6 @@ public class PharmacySearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //FirebaseApp.initializeApp(HomeActivity.homeContext);
-        //myRef = FirebaseDatabase.getInstance().getReference();
-        //mAuth = FirebaseAuth.getInstance();
         //dododoanddo();
         Log.d(TAG, "11111111111111111111111111");
     }
@@ -109,27 +109,21 @@ public class PharmacySearchFragment extends Fragment {
     }
 
 
-    public void dododoanddo(){
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>(){};
-                List<String> n = dataSnapshot.child("10118250").getValue(t);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     class SearchListener implements View.OnClickListener{
 
         @Override
         public void onClick(View v) {
-            MyContentProvider db = MyContentProvider.getInstance();
-            List<MedicineEntity> result = db.getItemByName("азикар");
+            /*OflineMyContentProvider db = OflineMyContentProvider.getInstance();
+            List<OflineMedicineEntity> result = db.getItemByName("%Тироксин%");
+            List<OflineMedicineEntity> result = db.getItemByID(24);
+            if(result.size() > 0)
+                Log.d("SQL Result", String.valueOf(result.get(0)));
+                */
+            final Intent intent = new Intent();
+            intent.setClass(mContext, SearchResultActivity.class);
+            startActivity(intent);
         }
     }
 }

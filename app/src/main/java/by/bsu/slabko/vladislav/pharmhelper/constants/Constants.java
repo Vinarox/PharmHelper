@@ -5,6 +5,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.objects.SearchItem;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.objects.SearchLine;
 
 public class Constants {
@@ -14,10 +15,14 @@ public class Constants {
                     "/o/SmallIDMedicine_utf-8.csv?alt=media&token=d26b74d8-e8a0-4e30-a04e-1ccd1a6bc527";
    /* public static final String FIREBASE_DATA_URL =
             "https://firebasestorage.googleapis.com/v0/b/pharm-222921.appspot.com/o/dialog.txt?alt=media&token=235ce7d5-8e7d-4f99-b33e-52f64dcde61f";*/
+   public static final String FIREBASE_ALL_DATA =
+           "https://firebasestorage.googleapis.com/v0/b/pharm-222921.appspot.com/o/SmallData_utf-8.csv?alt=media&token=d433d767-504c-4710-9eb4-fc729c2e3b9b";
     public static ArrayList<SearchLine> lines = new ArrayList<>();
+   public static ArrayList<SearchItem> searchRes = new ArrayList<>();
 
     public static String PHARM_DATA_PATH = "";
     public static final String DATA_FILE_NAME = "PharmData.csv";
+ public static final String DATA_ALL = "SmallData_utf-8.csv";
 
     public static Context appContext;
     public static Fragment currentFragment = null;

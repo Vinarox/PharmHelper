@@ -9,6 +9,6 @@ public class MedicineEntity {
     @PrimaryKey
     public int med_id;
 
-    @ColumnInfo(name = "MEDICINE")
+    @ColumnInfo(name = "medicine")
     public String medicine;
 }
