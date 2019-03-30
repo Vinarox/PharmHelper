@@ -19,10 +19,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncAppsInfo;
+import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncCreateDatabase;
+import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncCreateOflineDatabase;
+import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncDB;
 import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 import by.bsu.slabko.vladislav.pharmhelper.database.MyContentProvider;
+import by.bsu.slabko.vladislav.pharmhelper.searchResults.SearchInfo;
 
 public class PreStartSettings extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener  {
@@ -39,35 +44,87 @@ public class PreStartSettings extends AppCompatActivity
         Point size = new Point();
         display.getSize(size);
         new Constants(size.x, size.y);
+        new SearchInfo();
         loadSettingsFromSharedPreferences();
         PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isDBFull = sharedPreferences.getBoolean("IS_DB_FULL", false);
+        boolean isDownloaded = sharedPreferences.getBoolean("IS_DOWNLOADED", false);
+        if(!isDownloaded) {
+            boolean isDBFull = sharedPreferences.getBoolean("IS_DB_FULL", false);
 
-        try {
-            File dir = getExternalFilesDir(null);
+            try {
+                File dir = getExternalFilesDir(null);
                 Log.d("FIle", Environment
                         .getExternalStorageDirectory().toString() + "/" + Constants.DATA_FILE_NAME);
-               BufferedReader br = new BufferedReader(new FileReader(new File(dir , "/storage/emulated/0/Download/" + Constants.DATA_FILE_NAME)));
-              if(isDBFull == false) {
-                  MyContentProvider db = MyContentProvider.getInstance();
-                  String str = br.readLine();
-                  while ((str = br.readLine()) != null) {
-                                  db.addItemToDatabase(str);
-                  }
-              }
-              sharedPreferences
-                      .edit().
-                      putBoolean("IS_DB_FULL", true)
-                      .apply();
+                BufferedReader br = new BufferedReader(new FileReader(new File(dir, "/storage/emulated/0/Download/" + Constants.DATA_FILE_NAME)));
+
             } catch (FileNotFoundException e) {
                 AsyncAppsInfo faviconTask = new AsyncAppsInfo();
                 faviconTask.execute(getApplicationContext());
+                try {
+                    faviconTask.get();
+                } catch (ExecutionException e1) {
+                    e1.printStackTrace();
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
             } catch (IOException e) {
-            e.printStackTrace();
+                e.printStackTrace();
+            }
+            ////////////////////////////// Waiting for downloading file
+            if (!isDBFull) {
+                AsyncCreateDatabase createDatabase = new AsyncCreateDatabase();
+                createDatabase.execute(getExternalFilesDir(null));
+
+                sharedPreferences
+                        .edit().
+                        putBoolean("IS_DB_FULL", true)
+                        .apply();
+            }
+
+///////////////
+            ////////////////
+            ///////////
+            boolean isOflineDBFull = sharedPreferences.getBoolean("IS_OFLINE_DB_FULL", false);
+            try {
+                File dir = getExternalFilesDir(null);
+                Log.d("FIle", Environment
+                        .getExternalStorageDirectory().toString() + "/" + Constants.DATA_ALL);
+                BufferedReader br = new BufferedReader(new FileReader(new File(dir, "/storage/emulated/0/Download/" + Constants.DATA_ALL)));
+
+
+            } catch (FileNotFoundException e) {
+                AsyncDB faviconDB = new AsyncDB();
+                faviconDB.execute(getApplicationContext());
+             try{
+                faviconDB.get();
+            } catch (ExecutionException e1) {
+                e1.printStackTrace();
+            } catch (InterruptedException e1) {
+                 e1.printStackTrace();
+             }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (!isOflineDBFull) {
+
+                    AsyncCreateOflineDatabase createDatabase = new AsyncCreateOflineDatabase();
+                    createDatabase.execute(getExternalFilesDir(null));
+
+
         }
+
+            sharedPreferences
+                    .edit().
+                    putBoolean("IS_OFLINE_DB_FULL", true)
+                    .apply();
+        }
+        sharedPreferences
+                .edit().
+                putBoolean("IS_DOWNLOADED", true)
+                .apply();
     }
 
 

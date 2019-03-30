@@ -14,7 +14,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:tabWidgetStyle">@style/CustomTabWidget</item>
+        <!--<item name="android:tabWidgetStyle">@style/CustomTabWidget</item>-->
     </style>
 
     <style name="AppTheme.TransparentStatusBar">
@@ -59,4 +59,7 @@
     <style name="ThemeLauncher" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

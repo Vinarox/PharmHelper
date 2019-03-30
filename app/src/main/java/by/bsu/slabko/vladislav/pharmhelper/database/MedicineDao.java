@@ -16,7 +16,7 @@ public interface MedicineDao {
     @Query("SELECT * FROM MedicineEntity WHERE med_id = :id")
     List<MedicineEntity> getByID(long id);
 
-    @Query("SELECT * FROM MedicineEntity WHERE MEDICINE like :med")
+    @Query("SELECT * FROM MedicineEntity WHERE medicine like :med")
     List<MedicineEntity> getByName(String med);
 
     @Insert

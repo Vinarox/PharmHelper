@@ -11,9 +11,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -23,6 +25,8 @@ import com.microsoft.appcenter.crashes.Crashes;
 
 import by.bsu.slabko.vladislav.pharmhelper.PreStartSettings;
 import by.bsu.slabko.vladislav.pharmhelper.R;
+import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.SearchResultActivity;
+import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.objects.SearchItem;
 import by.bsu.slabko.vladislav.pharmhelper.activities.settings.SettingsActivity;
 import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.home.HomeFragment;
@@ -30,6 +34,11 @@ import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.PharmacySearc
 import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.objects.SearchLine;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.userList.UserListFragment;
 import com.crashlytics.android.Crashlytics;
+
+import java.util.List;
+
+import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMedicineEntity;
+import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMyContentProvider;
 import io.fabric.sdk.android.Fabric;
 
 public class HomeActivity extends PreStartSettings {
@@ -85,6 +94,43 @@ public class HomeActivity extends PreStartSettings {
         tabHost.addTab(spec);
 
         tabHost.setOnTabChangedListener(new TabListener());
+
+        SearchView searchMe =  findViewById(R.id.search_me);
+        searchMe.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(query.length() > 0)
+                    callSearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+//              if (searchView.isExpanded() && TextUtils.isEmpty(newText)) {
+                //callSearch(newText);
+//              }
+                return true;
+            }
+
+            public void callSearch(String query) {
+                OflineMyContentProvider db = OflineMyContentProvider.getInstance();
+                //List<OflineMedicineEntity> result = db.getItemByName("Тироксин");
+                query = query.trim();
+                List<OflineMedicineEntity> result = db.getItemByName("%" + query + "%");
+
+                Constants.searchRes.clear();
+                for(int i = 0; i < result.size(); i++) {
+                    Constants.searchRes.add(new SearchItem(result.get(i)));
+                    if(ReservResultActivity.getInstance() != null) {
+                        ReservResultActivity.notifyAllData();
+                    }
+                }
+                final Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), ReservResultActivity.class);
+                startActivity(intent);
+            }
+
+        });
 
         navigationView = findViewById(R.id.nav_view);
         TextView mSlideshowTextView;
