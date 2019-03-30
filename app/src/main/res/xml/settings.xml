@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="list_theme"
+        android:title="@string/dark_theme"
+        android:icon="@drawable/ic_home"/>
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/entries_maquette"
+        android:entryValues="@array/theme_values"
+        android:key="list_maquette"
+        android:title="List preference" />
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/settings_sort"
+        android:entryValues="@array/settings_sort_values"
+        android:key="sort"
+        android:title="List preference" />
+
+
+</PreferenceScreen>
