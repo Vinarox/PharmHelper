@@ -77,7 +77,7 @@ public class OflineMyContentProvider extends ContentProvider {
     }
 
     public List<OflineMedicineEntity> getItemByName(String name){
-        List<OflineMedicineEntity> it = medicineDao.getAll();
+        //List<OflineMedicineEntity> it = medicineDao.getAll();
          List<OflineMedicineEntity> items = medicineDao.getByName(name);
         // if(items.size() > 0) {
              //10118250
