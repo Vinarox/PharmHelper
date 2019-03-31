@@ -20,7 +20,7 @@ import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
-public class AsyncAppsInfo extends AsyncTask<Context, String, String> {
+public class AsyncAppsInfo extends AsyncTask<Context, String, Long> {
 
     @Override
     protected void onPreExecute() {
@@ -28,16 +28,14 @@ public class AsyncAppsInfo extends AsyncTask<Context, String, String> {
     }
 
 
-    protected String doInBackground(Context... f_cont) {
+    protected Long doInBackground(Context... f_cont) {
         long count;
-        downloadFile(f_cont[0], Environment
+        return downloadFile(f_cont[0], Environment
                 .getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).toString(), Constants.FIREBASE_DATA_URL);
-
-        return "wow";
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(Long result) {
         super.onPostExecute(result);
     }
 
