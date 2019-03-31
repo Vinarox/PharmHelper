@@ -22,7 +22,7 @@ public class Constants {
 
     public static String PHARM_DATA_PATH = "";
     public static final String DATA_FILE_NAME = "PharmData.csv";
- public static final String DATA_ALL = "SmallData_utf-8.csv";
+ public static final String DATA_ALL = "SmallData.csv";
 
     public static Context appContext;
     public static Fragment currentFragment = null;

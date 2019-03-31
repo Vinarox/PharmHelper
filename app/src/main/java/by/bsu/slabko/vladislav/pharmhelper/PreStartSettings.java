@@ -58,7 +58,7 @@ public class PreStartSettings extends AppCompatActivity
                 .getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isDownloaded = sharedPreferences.getBoolean("IS_DOWNLOADED", false);
+        boolean isDownloaded = sharedPreferences.getBoolean("IS_DOWNLOADED1", false);
         if(!isDownloaded) {
             boolean isDBFull = sharedPreferences.getBoolean("IS_DB_FULL", false);
 
@@ -98,7 +98,7 @@ public class PreStartSettings extends AppCompatActivity
 ///////////////
             ////////////////
             ///////////
-            boolean isOflineDBFull = sharedPreferences.getBoolean("IS_OFLINE_DB_FULL", false);
+            boolean isOflineDBFull = sharedPreferences.getBoolean("IS_OFLINE_DB_FULL1", false);
             try {
                 File dir = getExternalFilesDir(null);
                 Log.d("FIle", Environment
@@ -128,7 +128,7 @@ public class PreStartSettings extends AppCompatActivity
                         if(setTrue) {
                             sharedPreferences
                                     .edit().
-                                    putBoolean("IS_OFLINE_DB_FULL", true)
+                                    putBoolean("IS_OFLINE_DB_FULL1", true)
                                     .apply();
                         }
 
