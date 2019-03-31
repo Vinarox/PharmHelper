@@ -1,8 +1,11 @@
 package by.bsu.slabko.vladislav.pharmhelper;
 
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.net.Uri;
@@ -13,6 +16,7 @@ import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncAppsInfo;
 import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncCreateDatabase;
@@ -34,11 +40,13 @@ public class PreStartSettings extends AppCompatActivity
 
     private static boolean loadedFromSharedPreferences = false;
     private boolean showWelcomePage = true;
-
+    private long downloadID;
 
     @Override
     protected void onResume() {
         super.onResume();
+        boolean setTrue = false;
+        registerReceiver(onDownloadComplete,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -64,24 +72,27 @@ public class PreStartSettings extends AppCompatActivity
                 AsyncAppsInfo faviconTask = new AsyncAppsInfo();
                 faviconTask.execute(getApplicationContext());
                 try {
-                    faviconTask.get();
+                    faviconTask.get(2, TimeUnit.MINUTES);
                 } catch (ExecutionException e1) {
                     e1.printStackTrace();
                 } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                } catch (TimeoutException e1) {
                     e1.printStackTrace();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
             ////////////////////////////// Waiting for downloading file
+            boolean isDownloadedEnd;
             if (!isDBFull) {
-                AsyncCreateDatabase createDatabase = new AsyncCreateDatabase();
-                createDatabase.execute(getExternalFilesDir(null));
+                        //AsyncCreateDatabase createDatabase = new AsyncCreateDatabase();
+                       // createDatabase.execute(getExternalFilesDir(null));
 
-                sharedPreferences
-                        .edit().
-                        putBoolean("IS_DB_FULL", true)
-                        .apply();
+                        sharedPreferences
+                                .edit().
+                                putBoolean("IS_DB_FULL", true)
+                                .apply();
             }
 
 ///////////////
@@ -98,35 +109,60 @@ public class PreStartSettings extends AppCompatActivity
             } catch (FileNotFoundException e) {
                 AsyncDB faviconDB = new AsyncDB();
                 faviconDB.execute(getApplicationContext());
-             try{
-                faviconDB.get();
-            } catch (ExecutionException e1) {
-                e1.printStackTrace();
-            } catch (InterruptedException e1) {
-                 e1.printStackTrace();
-             }
+                try {
+                    downloadID = faviconDB.get(2, TimeUnit.MINUTES);
+                    setTrue = true;
+                } catch (ExecutionException e1) {
+                    e1.printStackTrace();
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                } catch (TimeoutException e1) {
+                    e1.printStackTrace();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
             if (!isOflineDBFull) {
+                        //AsyncCreateOflineDatabase createDatabase = new AsyncCreateOflineDatabase();
+                        //createDatabase.execute(getExternalFilesDir(null));
+                        if(setTrue) {
+                            sharedPreferences
+                                    .edit().
+                                    putBoolean("IS_OFLINE_DB_FULL", true)
+                                    .apply();
+                        }
 
-                    AsyncCreateOflineDatabase createDatabase = new AsyncCreateOflineDatabase();
-                    createDatabase.execute(getExternalFilesDir(null));
-
-
-        }
+            }
 
             sharedPreferences
                     .edit().
-                    putBoolean("IS_OFLINE_DB_FULL", true)
+                    putBoolean("IS_DOWNLOADED", true)
                     .apply();
         }
-        sharedPreferences
-                .edit().
-                putBoolean("IS_DOWNLOADED", true)
-                .apply();
     }
 
+    private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //Fetching the download id received with the broadcast
+            long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+            //Checking if the received broadcast is for our enqueued download by matching download id
+            if (downloadID == id) {
+                Log.d("creation", "Completed");
+                Toast.makeText(PreStartSettings.this, "Первый запуск. Поиск скоро будет доступен.", Toast.LENGTH_SHORT).show();
+                AsyncCreateOflineDatabase createDatabase = new AsyncCreateOflineDatabase();
+                createDatabase.execute(getExternalFilesDir(null));
+                /*try {
+                    createDatabase.get();
+                    Toast.makeText(PreStartSettings.this, "Database creating completed!", Toast.LENGTH_SHORT).show();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+            }
+        }
+    };
 
     @Override
     protected void onPause() {
@@ -136,6 +172,11 @@ public class PreStartSettings extends AppCompatActivity
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(onDownloadComplete);
+    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {

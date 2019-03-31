@@ -30,7 +30,7 @@ public class AsyncFirebase extends AsyncTask<String, Void, Void> {
     protected Void doInBackground(final String... ID) {
         Log.d("AsyncFirebase", String.valueOf(ID[0]));
         FirebaseApp.initializeApp(HomeActivity.homeContext);
-        myRef = FirebaseDatabase.getInstance().getReference().child("pharm-222921");
+        myRef = FirebaseDatabase.getInstance().getReference("pharm-222921");
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
