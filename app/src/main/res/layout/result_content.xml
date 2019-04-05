@@ -10,28 +10,46 @@
     tools:showIn="@layout/result_content">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
 
-        <TextView
+      <!--  <TextView
             android:layout_width="match_parent"
             android:layout_height="30sp"
             android:id="@+id/text_phone"
             android:textSize="20sp"
-            android:text="По стоимости" />
+            android:text="По стоимости"
+            android:layout_alignParentLeft="true"/> -->
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switch_compat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="false"
+                android:textSize="24dp"
+                android:text="Сортировать по    "
+                android:textOff="стоимости"
+                android:textOn="расстоянию"
+                app:showText="true"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
         <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/parent1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_list">
-            <android.support.v7.widget.RecyclerView android:id="@+id/my_view1"
-                android:scrollbars="vertical"
-                android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/my_view1"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                xmlns:android="http://schemas.android.com/apk/res/android">
+                android:scrollbars="vertical">
+
             </android.support.v7.widget.RecyclerView>
 
         </android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.singlePharmacyResults.SinglePharmacyResults"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/single_pharm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/dark_blue"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/single_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="@color/blue"
+            android:layout_marginLeft="16dp"
+            android:paddingBottom="2dp"
+            android:layout_gravity="center"
+            android:layout_below="@id/single_pharm"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:id="@+id/single_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
+            android:layout_marginRight="8dp"
+            android:paddingBottom="2dp"
+            android:layout_below="@id/single_address"
+            android:layout_alignParentRight="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/single_recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

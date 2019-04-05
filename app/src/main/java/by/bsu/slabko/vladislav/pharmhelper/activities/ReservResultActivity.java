@@ -1,5 +1,6 @@
 package by.bsu.slabko.vladislav.pharmhelper.activities;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +22,7 @@ import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 public class ReservResultActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private static RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    public RecyclerView.LayoutManager layoutManager;
     public static ReservResultActivity instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +45,10 @@ public class ReservResultActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.my_view_0);
         recyclerView.setHasFixedSize(true);
+
         //registerForContextMenu(recyclerView);
 
-        layoutManager = new LinearLayoutManager(getApplication());
+        layoutManager = new CustomLinearLayoutManager(getApplication(), LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new ReservAdapter(getApplicationContext(), inflater);
@@ -61,4 +63,17 @@ public class ReservResultActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
+
+    public class CustomLinearLayoutManager extends LinearLayoutManager {
+        public CustomLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
+            super(context, orientation, reverseLayout);
+
+        }
+
+        // it will always pass false to RecyclerView when calling "canScrollVertically()" method.
+        @Override
+        public boolean canScrollVertically() {
+            return Constants.canScrolled;
+        }
+    }
 }

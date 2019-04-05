@@ -10,15 +10,74 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <GridView
+    <!--<GridView
         android:id="@+id/grid_slot"
         android:layout_width="match_parent"
         android:layout_height="120sp"
         android:layout_margin="6sp"
         android:numColumns="2"
-        android:verticalSpacing="20sp"
-        android:horizontalSpacing="14sp">
-    </GridView>
+        android:verticalSpacing="6sp">
+    </GridView>-->
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="#eeeeee"
+        android:stretchColumns="*"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    <TableRow android:background="#cccccc"
+        android:padding="5dp">
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_marginRight="5sp"
+            android:minHeight="120sp"
+            android:background="@drawable/back">
+
+            <TextView
+                android:id="@+id/info_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="6sp"
+                android:text="Телефоны\nаптек"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/info_image1"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/ic_app_icon"
+                android:padding="8dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_marginLeft="5sp"
+            android:minHeight="120sp"
+            android:background="@drawable/back">
+
+            <TextView
+                android:id="@+id/info_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="6sp"
+                android:text="Обратная\nсвязь"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/info_image2"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/ic_app_icon"
+                android:padding="8dp"/>
+
+        </RelativeLayout>
+    </TableRow>
+    </TableLayout>>
 
     <LinearLayout
         android:orientation="vertical"
