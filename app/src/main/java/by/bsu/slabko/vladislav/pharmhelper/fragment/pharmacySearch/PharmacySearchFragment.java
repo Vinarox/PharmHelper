@@ -14,28 +14,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
+import com.yandex.mapkit.geometry.Point;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import by.bsu.slabko.vladislav.pharmhelper.R;
 import by.bsu.slabko.vladislav.pharmhelper.activities.HomeActivity;
 import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.SearchResultActivity;
+import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.comparators.OrderComparator;
+import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.objects.SearchItem;
+import by.bsu.slabko.vladislav.pharmhelper.activities.singlePharmacyResults.SinglePharmacyResults;
 import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 import by.bsu.slabko.vladislav.pharmhelper.database.MedicineEntity;
 import by.bsu.slabko.vladislav.pharmhelper.database.MyContentProvider;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.adapters.ItemSearchListAdapter;
+import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.adapters.MyListViewAdapter;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.objects.SearchLine;
 import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMedicineEntity;
 import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMyContentProvider;
@@ -43,12 +42,13 @@ import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMyContentProvide
 
 public class PharmacySearchFragment extends Fragment {
     private final String TAG = "PharmacySearchFragment";
-    private RecyclerView recyclerView;
+    private static RecyclerView recyclerView;
     private static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private static Context mContext = HomeActivity.homeContext;
 
-
+    private static MyListViewAdapter myListViewAdapter;
+    private static TextView curPrices = null;
 
 
     public PharmacySearchFragment() {
@@ -74,10 +74,12 @@ public class PharmacySearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "2222222222222222222222222222");
+        Constants.searchRes.clear();
         View v = inflater.inflate(R.layout.fragment_pharmacy_search, container, false);
+        curPrices = v.findViewById(R.id.text_sum);
         recyclerView = (RecyclerView) v.findViewById(R.id.my_view);
         recyclerView.setHasFixedSize(true);
-        //registerForContextMenu(recyclerView);
+        registerForContextMenu(recyclerView);
 
         layoutManager = new LinearLayoutManager((getActivity()));
         recyclerView.setLayoutManager(layoutManager);
@@ -86,6 +88,14 @@ public class PharmacySearchFragment extends Fragment {
                 ((HomeActivity)getActivity()).getMenuInflater());
         recyclerView.setAdapter(mAdapter);
 
+//////////////////////////////////////////////////
+        //ListView lvMain = (ListView) v.findViewById(R.id.my_view);
+        // создаем адаптер
+        //myListViewAdapter = new MyListViewAdapter(HomeActivity.homeContext, Constants.lines);
+        // присваиваем адаптер списку
+        //lvMain.setAdapter(myListViewAdapter);
+//////////////////////////////////////////////////
+
         Button searchButton = v.findViewById(R.id.search_button);
         searchButton.setOnClickListener(new SearchListener());
         return v;
@@ -93,37 +103,53 @@ public class PharmacySearchFragment extends Fragment {
 
     public static void addSearchLine(boolean needNotify){
         int lineSize = Constants.lines.size() + 1;
-        Constants.lines.add(new SearchLine(mContext));
+        Constants.lines.add(new SearchLine(mContext, HomeActivity.homeInflater));
         if(needNotify)
             notifyAllData();
     }
     public static void deleteSearchLine(SearchLine object){
         int index  = Constants.lines.indexOf(object);
-        if(index >= 0)
+        if(index >= 0) {
             Constants.lines.remove(index);
-        notifyAllData();
+            notifyDataRemove(index);
+        }
     }
 
     public static void notifyAllData(){
-        mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemInserted(Constants.lines.size() - 1);
+    }
+
+    public static void notifyDataRemove(int i){
+        //mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemRemoved(i);
+        //mAdapter.notifyItemRangeChanged(i, Constants.lines.size());
     }
 
 
 
 
     class SearchListener implements View.OnClickListener{
-
         @Override
         public void onClick(View v) {
-            /*OflineMyContentProvider db = OflineMyContentProvider.getInstance();
-            List<OflineMedicineEntity> result = db.getItemByName("%Тироксин%");
-            List<OflineMedicineEntity> result = db.getItemByID(24);
-            if(result.size() > 0)
-                Log.d("SQL Result", String.valueOf(result.get(0)));
-                */
             final Intent intent = new Intent();
             intent.setClass(mContext, SearchResultActivity.class);
             startActivity(intent);
         }
+    }
+
+    public static void setPrices(){
+        Collections.sort(Constants.searchRes, new OrderComparator());
+        Constants.loacotionPoint = new Point(Constants.searchRes.get(0).latitude, Constants.searchRes.get(0).longitude);
+        Constants.minPrice = Constants.searchRes.get(0).fullPrice;
+        Constants.maxPrice = Constants.searchRes.get(Constants.searchRes.size()-1).fullPrice;
+        curPrices.setText("Сумма: " + Constants.minPrice + " - " + Constants.maxPrice + "р.");
+    }
+
+    public static void newIntent(int index){
+        final Intent intent = new Intent();
+        intent.setClass(mContext, SinglePharmacyResults.class);
+        intent.putExtra("index", index);
+        mContext.startActivity(intent);
     }
 }

@@ -44,8 +44,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
-        GridView gvMain = (GridView) v.findViewById(R.id.grid_slot);
-        gvMain.setNumColumns(2);
+        /*GridView gvMain = (GridView) v.findViewById(R.id.grid_slot);
+       // gvMain.setNumColumns(2);
         View[] boxes = {inflater.inflate(R.layout.infobox, null, false),
                 inflater.inflate(R.layout.infobox, null, false)};
         TextView info_text = boxes[0].findViewById(R.id.info_text);
@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
         mContext = HomeActivity.homeContext;
 
         mGridAdapter = new GridAdapter(mContext, boxes);
-        gvMain.setAdapter(mGridAdapter);
+        gvMain.setAdapter(mGridAdapter);*/
 
         LinearLayout userBox = v.findViewById(R.id.user_cabinet);
         userBox.addView(inflater.inflate(R.layout.infobox, container, false));

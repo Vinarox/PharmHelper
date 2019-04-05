@@ -16,23 +16,9 @@ import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
-import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncAppsInfo;
-import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncCreateDatabase;
-import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncCreateOflineDatabase;
-import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncDB;
+import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncDBConnection;
 import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
-import by.bsu.slabko.vladislav.pharmhelper.database.MyContentProvider;
+import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.objects.SearchLine;
 import by.bsu.slabko.vladislav.pharmhelper.searchResults.SearchInfo;
 
 public class PreStartSettings extends AppCompatActivity
@@ -46,123 +32,26 @@ public class PreStartSettings extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         boolean setTrue = false;
-        registerReceiver(onDownloadComplete,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        AsyncDBConnection createDatabase = new AsyncDBConnection();
+        createDatabase.execute();
         WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         new Constants(size.x, size.y);
+        if(Constants.lines.size() == 0) {
+            Constants.lines.add(new SearchLine(this, getLayoutInflater()));
+           // Constants.lines.add(new SearchLine(this, getLayoutInflater()));
+            //Constants.lines.add(new SearchLine(this, getLayoutInflater()));
+        }
         new SearchInfo();
         loadSettingsFromSharedPreferences();
         PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isDownloaded = sharedPreferences.getBoolean("IS_DOWNLOADED1", false);
-        if(!isDownloaded) {
-            boolean isDBFull = sharedPreferences.getBoolean("IS_DB_FULL", false);
-
-            try {
-                File dir = getExternalFilesDir(null);
-                Log.d("FIle", Environment
-                        .getExternalStorageDirectory().toString() + "/" + Constants.DATA_FILE_NAME);
-                BufferedReader br = new BufferedReader(new FileReader(new File(dir, "/storage/emulated/0/Download/" + Constants.DATA_FILE_NAME)));
-
-            } catch (FileNotFoundException e) {
-                AsyncAppsInfo faviconTask = new AsyncAppsInfo();
-                faviconTask.execute(getApplicationContext());
-                try {
-                    faviconTask.get(2, TimeUnit.MINUTES);
-                } catch (ExecutionException e1) {
-                    e1.printStackTrace();
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                } catch (TimeoutException e1) {
-                    e1.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            ////////////////////////////// Waiting for downloading file
-            boolean isDownloadedEnd;
-            if (!isDBFull) {
-                        //AsyncCreateDatabase createDatabase = new AsyncCreateDatabase();
-                       // createDatabase.execute(getExternalFilesDir(null));
-
-                        sharedPreferences
-                                .edit().
-                                putBoolean("IS_DB_FULL", true)
-                                .apply();
-            }
-
-///////////////
-            ////////////////
-            ///////////
-            boolean isOflineDBFull = sharedPreferences.getBoolean("IS_OFLINE_DB_FULL1", false);
-            try {
-                File dir = getExternalFilesDir(null);
-                Log.d("FIle", Environment
-                        .getExternalStorageDirectory().toString() + "/" + Constants.DATA_ALL);
-                BufferedReader br = new BufferedReader(new FileReader(new File(dir, "/storage/emulated/0/Download/" + Constants.DATA_ALL)));
-
-
-            } catch (FileNotFoundException e) {
-                AsyncDB faviconDB = new AsyncDB();
-                faviconDB.execute(getApplicationContext());
-                try {
-                    downloadID = faviconDB.get(2, TimeUnit.MINUTES);
-                    setTrue = true;
-                } catch (ExecutionException e1) {
-                    e1.printStackTrace();
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                } catch (TimeoutException e1) {
-                    e1.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (!isOflineDBFull) {
-                        //AsyncCreateOflineDatabase createDatabase = new AsyncCreateOflineDatabase();
-                        //createDatabase.execute(getExternalFilesDir(null));
-                        if(setTrue) {
-                            sharedPreferences
-                                    .edit().
-                                    putBoolean("IS_OFLINE_DB_FULL1", true)
-                                    .apply();
-                        }
-
-            }
-
-            sharedPreferences
-                    .edit().
-                    putBoolean("IS_DOWNLOADED", true)
-                    .apply();
-        }
     }
 
-    private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //Fetching the download id received with the broadcast
-            long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-            //Checking if the received broadcast is for our enqueued download by matching download id
-            if (downloadID == id) {
-                Log.d("creation", "Completed");
-                Toast.makeText(PreStartSettings.this, "Первый запуск. Поиск скоро будет доступен.", Toast.LENGTH_SHORT).show();
-                AsyncCreateOflineDatabase createDatabase = new AsyncCreateOflineDatabase();
-                createDatabase.execute(getExternalFilesDir(null));
-                /*try {
-                    createDatabase.get();
-                    Toast.makeText(PreStartSettings.this, "Database creating completed!", Toast.LENGTH_SHORT).show();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
-            }
-        }
-    };
 
     @Override
     protected void onPause() {
@@ -175,7 +64,6 @@ public class PreStartSettings extends AppCompatActivity
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(onDownloadComplete);
     }
 
     @Override

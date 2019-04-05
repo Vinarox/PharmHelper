@@ -12,7 +12,8 @@
         android:layout_margin="4sp"
         android:layout_toLeftOf="@id/acces_button"
         android:background="@drawable/circle"
-        android:maxLines="1"/>
+        android:maxLines="1"
+        android:inputType="text" />
     <Button
         android:id="@+id/acces_button"
         android:layout_width="40sp"
@@ -20,6 +21,6 @@
         android:layout_margin="4sp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/ic_accept"/>
+        android:background="@drawable/ic_accept" />
 
 </RelativeLayout>

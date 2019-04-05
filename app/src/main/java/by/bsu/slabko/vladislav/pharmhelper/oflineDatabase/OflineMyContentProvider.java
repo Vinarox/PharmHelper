@@ -3,19 +3,11 @@ package by.bsu.slabko.vladislav.pharmhelper.oflineDatabase;
 import android.arch.persistence.room.Room;
 import android.content.ContentProvider;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
-
-import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncFirebase;
-import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMyContentProvider;
-import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMedicineDao;
-import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMedicineEntity;
 
 public class OflineMyContentProvider extends ContentProvider {
     static OflineMyContentProvider instance;

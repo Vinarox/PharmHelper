@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
@@ -26,8 +27,10 @@ import com.microsoft.appcenter.crashes.Crashes;
 import by.bsu.slabko.vladislav.pharmhelper.PreStartSettings;
 import by.bsu.slabko.vladislav.pharmhelper.R;
 import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.SearchResultActivity;
+import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.comparators.OrderComparator;
 import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.objects.SearchItem;
 import by.bsu.slabko.vladislav.pharmhelper.activities.settings.SettingsActivity;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.AbstractController;
 import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.home.HomeFragment;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.PharmacySearchFragment;
@@ -35,10 +38,6 @@ import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.objects.Searc
 import by.bsu.slabko.vladislav.pharmhelper.fragment.userList.UserListFragment;
 import com.crashlytics.android.Crashlytics;
 
-import java.util.List;
-
-import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMedicineEntity;
-import by.bsu.slabko.vladislav.pharmhelper.oflineDatabase.OflineMyContentProvider;
 import io.fabric.sdk.android.Fabric;
 
 public class HomeActivity extends PreStartSettings {
@@ -52,6 +51,7 @@ public class HomeActivity extends PreStartSettings {
     private Fragment fragmentSearch;
     private Fragment fragmentUserList;
     public static Context homeContext;
+    public static LayoutInflater homeInflater;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -60,6 +60,7 @@ public class HomeActivity extends PreStartSettings {
         AppCenter.start(getApplication(), "f484689c-80ff-42d3-9aa9-c395b757cd82",
                 Analytics.class, Crashes.class);
         homeContext = this;
+        homeInflater = getLayoutInflater();
 
         super.onResume();
         Fabric.with(this, new Crashlytics());
@@ -113,20 +114,22 @@ public class HomeActivity extends PreStartSettings {
             }
 
             public void callSearch(String query) {
-                OflineMyContentProvider db = OflineMyContentProvider.getInstance();
+                //OflineMyContentProvider db = OflineMyContentProvider.getInstance();
                 //List<OflineMedicineEntity> result = db.getItemByName("Тироксин");
                 query = query.trim();
-                List<OflineMedicineEntity> result = db.getItemByName("%" + query + "%");
+                //List<OflineMedicineEntity> result = db.getItemByName("%" + query + "%");
 
                 Constants.searchRes.clear();
-                for(int i = 0; i < result.size(); i++) {
+                new AbstractController(query);
+
+                /*for(int i = 0; i < result.size(); i++) {
                     Constants.searchRes.add(new SearchItem(result.get(i)));
                     if(ReservResultActivity.getInstance() != null) {
                         ReservResultActivity.notifyAllData();
                     }
-                }
+                }*/
                 final Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), ReservResultActivity.class);
+                intent.setClass(getApplicationContext(), SearchResultActivity.class);
                 startActivity(intent);
             }
 
@@ -141,6 +144,8 @@ public class HomeActivity extends PreStartSettings {
         mSlideshowTextView.setTextColor(getResources().getColor(R.color.colorAccent));
         mSlideshowTextView.setTextSize(22);
         mSlideshowTextView.setText("Минск");
+
+
 
         fragmentHome = HomeFragment.newInstance(this);
         fragmentSearch = PharmacySearchFragment.newInstance();
@@ -175,8 +180,7 @@ public class HomeActivity extends PreStartSettings {
                         return true;
                     }
                 });
-        if(Constants.lines.size() == 0)
-            Constants.lines.add(new SearchLine(homeContext));
+
     }
 
 
