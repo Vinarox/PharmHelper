@@ -51,7 +51,7 @@ public class ReservAdapter extends RecyclerView.Adapter<ItemSearchListAdapter.My
         });
         view.setLongClickable(true);
         Log.d("Adapter", "11111111111111111111111111");
-        ItemSearchListAdapter.MyViewHolder vh = new ItemSearchListAdapter.MyViewHolder(view);
+        ItemSearchListAdapter.MyViewHolder vh = new ItemSearchListAdapter.MyViewHolder(view, null);
 
         return vh;
     }
@@ -71,11 +71,11 @@ public class ReservAdapter extends RecyclerView.Adapter<ItemSearchListAdapter.My
         avatar.setImageResource(R.drawable.button_circle);
 
         app_name.setText(
-                Constants.searchRes.get(pos).name
+                Constants.searchRes.get(pos).pharmName
         );
         app_name.setTextColor(mContext.getResources().getColor(R.color.green));
         app_name1.setText(Constants.searchRes.get(pos).pharmName);
-        app_name2.setText(String.valueOf(Constants.searchRes.get(pos).price));
+        app_name2.setText(String.valueOf(Constants.searchRes.get(pos).fullPrice));
         app_name2.setTextColor(mContext.getResources().getColor(R.color.red));
     }
 
@@ -84,6 +84,8 @@ public class ReservAdapter extends RecyclerView.Adapter<ItemSearchListAdapter.My
     public int getItemCount() {
         return Constants.searchRes.size();
     }
+
+
 
     class MyOnLongClickListener implements View.OnLongClickListener {
         private int pos;

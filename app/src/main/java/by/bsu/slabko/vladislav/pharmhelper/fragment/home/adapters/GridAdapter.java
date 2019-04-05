@@ -19,9 +19,9 @@ public class GridAdapter  extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if (convertView == null) {
+        //if (convertView == null) {
             convertView = mBoxes[position];
-        }
+       // }
         return (convertView);
     }
 
@@ -31,7 +31,7 @@ public class GridAdapter  extends BaseAdapter {
     }
 
     // возвращает содержимое выделенного элемента списка
-    public View getItem(int position) {
+    public Object getItem(int position) {
         return mBoxes[position];
     }
 

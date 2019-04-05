@@ -14,19 +14,31 @@
         android:textSize="30sp"
         android:textStyle="bold|italic" />
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parent"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/text_list">
-    <android.support.v7.widget.RecyclerView android:id="@+id/my_view"
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_list">
+        <android.support.v7.widget.RecyclerView android:id="@+id/my_view"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <!--<ListView
+        android:layout_below="@id/text_list"
+        android:id="@+id/my_view"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:drawSelectorOnTop="false"
+        android:divider="@null">
+    </ListView>-->
 
-</android.support.design.widget.CoordinatorLayout>
 
     <Button
         android:id="@+id/search_button"
@@ -41,6 +53,7 @@
 
     <TextView
         android:id="@+id/text_sum"
+        android:textColor="@color/red"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

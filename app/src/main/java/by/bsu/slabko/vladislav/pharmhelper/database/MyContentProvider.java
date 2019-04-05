@@ -5,20 +5,13 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-
 import java.util.List;
-
-import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncFirebase;
 
 public class MyContentProvider extends ContentProvider {
     static MyContentProvider instance;
     private  DatabaseController db;
     private MedicineDao medicineDao;
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference myRef;
 
     @Override
     public boolean onCreate() {
@@ -64,7 +57,6 @@ public class MyContentProvider extends ContentProvider {
         // if(items.size() > 0) {
              //10118250
             // getDataFromFirebaseDatabase(items.get(0).med_id);
-        getDataFromFirebaseDatabase("10118250");
          //}
         return items;
     }
@@ -91,8 +83,4 @@ public class MyContentProvider extends ContentProvider {
         return 0;
     }
 
-    public void getDataFromFirebaseDatabase(final String ID){
-        AsyncFirebase faviconTask = new AsyncFirebase();
-        faviconTask.execute(ID);
-    }
 }
