@@ -6,8 +6,11 @@
     <color name="backgroundGray">#E0E0E0</color>
     <color name="green">#0cee02</color>
     <color name="red">#ee0207</color>
+    <color name="white">#FFFFFF</color>
     <color name="light_back">#FFFF99</color>
     <color name="dark_blue">#140078</color>
     <color name="blue">#512da8</color>
+    <color name="tab_grey">#BABCC7</color>
+
 
 </resources>

@@ -88,7 +88,8 @@ public class ResultListAdapter  extends RecyclerView.Adapter<ItemSearchListAdapt
         app_name2.setText(Constants.searchRes.get(position).phone);
         app_name2.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
 
-        app_name3.setText(String.valueOf(Constants.searchRes.get(position).fullPrice));
+        String displayed = String.valueOf(Constants.searchRes.get(position).fullPrice) + "р.";
+        app_name3.setText(displayed);
         app_name3.setTextColor(mContext.getResources().getColor(R.color.red));
         /*
         Log.d("Adapter", String.valueOf(position));

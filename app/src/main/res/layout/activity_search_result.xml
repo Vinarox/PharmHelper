@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.searchResult.SearchResultActivity">
 
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -15,21 +16,36 @@
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
+
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:elevation="4dp"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            android:elevation="4dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_scrollFlags="scroll"
             app:toolbarId="@+id/toolbar">
 
-
-            <com.yandex.mapkit.mapview.MapView
-                android:id="@+id/my_mapview"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/f3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.yandex.mapkit.mapview.MapView
+                    android:id="@+id/my_mapview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:apiKey="c9043558-54e4-4794-adc8-c052e65ecdc4"
+                    android:clickable="true"
+                    android:descendantFocusability="blocksDescendants"
+                    android:fitsSystemWindows="true"
+                    android:focusable="auto"
+                    android:isScrollContainer="true" />
+            </LinearLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -44,13 +60,14 @@
 
     <include layout="@layout/result_content" />
 
-    <!--<android.support.design.widget.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:onClick="myFloatingButtonClick"
+        android:src="@drawable/ic_map"
         app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"
-        android:src="@drawable/ic_star"/>-->
+        app:layout_anchorGravity="bottom|clip_vertical|clip_horizontal|end" />
 
 </android.support.design.widget.CoordinatorLayout>

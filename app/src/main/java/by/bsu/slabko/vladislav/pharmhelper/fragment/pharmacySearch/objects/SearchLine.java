@@ -8,16 +8,26 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import by.bsu.slabko.vladislav.pharmhelper.R;
+import by.bsu.slabko.vladislav.pharmhelper.activities.HomeActivity;
+import by.bsu.slabko.vladislav.pharmhelper.activities.SuggestionAdapter;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.PharmacySearchFragment;
+import by.bsu.slabko.vladislav.pharmhelper.localDBofMedicineNames.LocalMedicineNamesEntity;
+import by.bsu.slabko.vladislav.pharmhelper.localDBofMedicineNames.LocalMedicineNamesProvider;
 
 public class SearchLine {
     public View view;
 
-    public EditText inputLine;
+    public AutoCompleteTextView inputLine;
     public Button statusButton;
     public Context mContext;
     public boolean isGreen;
@@ -38,6 +48,7 @@ public class SearchLine {
         this.inputLine = view.findViewById(R.id.input);
         this.enteredString = "";
         this.statusButton.setClickable(true);
+
         //addListeners();
         setViews(c, statusButton);
     }
@@ -67,11 +78,11 @@ public class SearchLine {
         this.inputLine.setOnKeyListener(enterListener);
     }
 
-    public EditText getInputLine() {
+    public AutoCompleteTextView getInputLine() {
         return inputLine;
     }
 
-    public void setInputLine(EditText inputLine) {
+    public void setInputLine(AutoCompleteTextView inputLine) {
         this.inputLine = inputLine;
     }
 
@@ -114,6 +125,4 @@ public class SearchLine {
             return false;
         }
     }
-
-
 }

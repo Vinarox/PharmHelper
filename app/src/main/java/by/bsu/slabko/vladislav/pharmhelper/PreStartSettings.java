@@ -1,25 +1,32 @@
 package by.bsu.slabko.vladislav.pharmhelper;
 
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+
+import com.yandex.mapkit.MapKitFactory;
+import com.yandex.mapkit.directions.DirectionsFactory;
+import com.yandex.mapkit.search.SearchFactory;
+import com.yandex.mapkit.transport.TransportFactory;
+
+import java.util.concurrent.ExecutionException;
+
 import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncDBConnection;
+import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncLocalMedicineNames;
+import by.bsu.slabko.vladislav.pharmhelper.activities.HomeActivity;
 import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 import by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.objects.SearchLine;
 import by.bsu.slabko.vladislav.pharmhelper.searchResults.SearchInfo;
+import by.bsu.slabko.vladislav.pharmhelper.services.CleverCloudDataService;
 
 public class PreStartSettings extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener  {
@@ -27,13 +34,14 @@ public class PreStartSettings extends AppCompatActivity
     private static boolean loadedFromSharedPreferences = false;
     private boolean showWelcomePage = true;
     private long downloadID;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onResume() {
         super.onResume();
         boolean setTrue = false;
-        AsyncDBConnection createDatabase = new AsyncDBConnection();
-        createDatabase.execute();
+        AsyncDBConnection createDatabaseConnection = new AsyncDBConnection();
+        createDatabaseConnection.execute();
         WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -41,15 +49,36 @@ public class PreStartSettings extends AppCompatActivity
         new Constants(size.x, size.y);
         if(Constants.lines.size() == 0) {
             Constants.lines.add(new SearchLine(this, getLayoutInflater()));
-           // Constants.lines.add(new SearchLine(this, getLayoutInflater()));
-            //Constants.lines.add(new SearchLine(this, getLayoutInflater()));
         }
         new SearchInfo();
         loadSettingsFromSharedPreferences();
         PreferenceManager
                 .getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean hasLocalDB = sharedPreferences.getBoolean(Constants.HAS_LOCAL_DB, false);
+        if(!hasLocalDB){
+            try {
+                createDatabaseConnection.get();
+                //this.startService(new Intent(this, CleverCloudDataService.class));
+                AsyncLocalMedicineNames asyncLocalMedicineNames = new AsyncLocalMedicineNames();
+                asyncLocalMedicineNames.execute();
+                sharedPreferences
+                        .edit()
+                        .putBoolean(Constants.HAS_LOCAL_DB, true)
+                        .apply();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        MapKitFactory.setApiKey(Constants.YANDEX_MAP_KEY);
+        MapKitFactory.initialize(HomeActivity.homeContext);
+        SearchFactory.initialize(HomeActivity.homeContext);
+        TransportFactory.initialize(HomeActivity.homeContext);
+        DirectionsFactory.initialize(HomeActivity.homeContext);
     }
 
 
@@ -82,10 +111,25 @@ public class PreStartSettings extends AppCompatActivity
         if (sharedPreferences == null)
             return;
         switch (key) {
+            case Constants.APP_THEME:
+                changeTheme(sharedPreferences.getBoolean(Constants.APP_THEME, false));
+                recreate();
+                break;
             default:
-                //onSortChancged(sharedPreferences, key);
                 break;
         }
+    }
+
+    public void changeTheme(boolean isNight){
+        if(isNight){
+            AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        recreate();
     }
 
     private void loadSettingsFromSharedPreferences() {

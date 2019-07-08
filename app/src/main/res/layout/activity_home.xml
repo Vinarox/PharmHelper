@@ -21,7 +21,7 @@
             android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-            <SearchView
+     <!--       <SearchView
                 android:id="@+id/search_me"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -31,6 +31,7 @@
                 android:tooltipText="Поиск"
                 app:actionViewClass="android.support.v7.widget.SearchView"
                 app:showAsAction="ifRoom|withText|collapseActionView" />
+-->
         </android.support.v7.widget.Toolbar>
 
         <TabHost
@@ -48,7 +49,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:animateLayoutChanges="true"
-                    android:background="@android:color/white"></TabWidget>
+                    android:background="@android:color/white"
+                    style="@style/CustomTheme"></TabWidget>
                 <LinearLayout
                     android:id="@+id/change_frame"
                     android:layout_width="match_parent"
@@ -64,17 +66,14 @@
                     android:layout_above="@android:id/tabs">
                     <fragment android:name="by.bsu.slabko.vladislav.pharmhelper.fragment.home.HomeFragment"
                         android:id="@+id/fr1"
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <fragment android:name="by.bsu.slabko.vladislav.pharmhelper.fragment.pharmacySearch.PharmacySearchFragment"
                         android:id="@+id/fr2"
-                        android:layout_weight="2"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                     <fragment android:name="by.bsu.slabko.vladislav.pharmhelper.fragment.userList.UserListFragment"
                         android:id="@+id/fr3"
-                        android:layout_weight="3"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
                 </FrameLayout>
@@ -88,6 +87,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:background="#B3FFFFFF"
         app:headerLayout="@layout/nav_header"
         app:itemIconTint="@color/colorPrimaryDark"
         app:itemTextColor="@color/colorPrimaryDark"

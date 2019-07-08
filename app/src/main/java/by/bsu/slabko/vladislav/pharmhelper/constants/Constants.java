@@ -1,8 +1,5 @@
 package by.bsu.slabko.vladislav.pharmhelper.constants;
 
-import android.app.Fragment;
-import android.content.Context;
-
 import com.yandex.mapkit.geometry.Point;
 
 import java.sql.Connection;
@@ -42,8 +39,18 @@ public class Constants {
     public static int screenHight;
 
     public static Point loacotionPoint = new Point(53.900706, 27.559335);
-    public static float minPrice = .0f;
-    public static float maxPrice = .0f;
+    public static double minPrice = .0f;
+    public static double maxPrice = .0f;
+
+    public final static String APP_THEME = "app_theme";
+    public final static String HAS_LOCAL_DB = "hasLocalDB";
+
+    public final static double LOW_LEFT_LAT = 53.826974;
+    public final static double LOW_LEFT_LON = 27.346493;
+    public final static double UP_RIGHT_LAT = 53.993788;
+    public final static double UP_RIGHT_LON = 27.789071;
+
+    public static String isDialogFinished  = null;
 
 
     public Constants(int x, int y){

@@ -1,5 +1,6 @@
 package by.bsu.slabko.vladislav.pharmhelper.AsyncTasks;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import java.sql.Connection;
@@ -7,137 +8,152 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.objects.SearchItem;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.controllers.CitiesController;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.controllers.ManufacturersController;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.controllers.MedecinesController;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.controllers.MinskInfoController;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.controllers.PharmaciesController;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.tables.AllDbInfo;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.tables.Manufacturers;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.tables.Medecines;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.tables.MinskInfo;
+import by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase.tables.Pharmacies;
 import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 
 public class AsyncGetDataFromDB extends AsyncTask<String, Void, Void> {
+    private CitiesController citiesController;
+    private ManufacturersController manufacturersController;
+    private MedecinesController medecinesController;
+    private MinskInfoController minskInfoController;
+    private PharmaciesController pharmaciesController;
 
     @Override
     protected Void doInBackground(String... name) {
-        try {
-            findInfo(name[0]);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        /*Medecines medecines;
+        if(name.length == 2){
+            medecines = new Medecines(Integer.parseInt(name[1]), name[0]);
         }
+        else {
+            medecines = medecinesController.getEntityByString(name[0]);
+        }
+        if(medecines != null) {
+            ArrayList<MinskInfo> minskInfos =
+                    (ArrayList<MinskInfo>) minskInfoController.getEntityById(medecines.getIdMedicine());
+            addToSearchRes(medecines.getMedecine(), minskInfos, Constants.searchRes.size());
+        }*/
+        getJoinedInfo(name[0], name[1], Constants.searchRes.size());
         return null;
     }
+
+    private void addToSearchRes(String medecineName, List<MinskInfo> list, int isFirstAdd){
+        Pharmacies pharmacies;
+        Manufacturers manufacturers;
+        for(MinskInfo obj: list){
+            pharmacies = pharmaciesController.getUniqueEntityById(obj.getIdPharmacy());
+            manufacturers = manufacturersController.getUniqueEntityById(obj.getIdManuf());//реализовать
+            if(pharmacies != null && manufacturers != null)
+                addItemToList(medecineName, obj, pharmacies, manufacturers, isFirstAdd);
+        }
+    }
+
+    private void getJoinedInfo(String medicineName, String id_med, int isFirstAdd) {
+        List<AllDbInfo> list =  medecinesController.getAllJoinedInfo(medicineName, id_med);
+        for(AllDbInfo obj: list) {
+            addJoinedItemsToList(medicineName, obj, isFirstAdd);
+        }
+    }
+
+    private void addJoinedItemsToList(String medicineName, AllDbInfo allDbInfo, int isFirstAdd){
+        if(isFirstAdd == 0){
+            Constants.searchRes.add(new SearchItem(
+                    allDbInfo.getIdPharmacy(),
+                    allDbInfo.getPharmacyName(),
+                    allDbInfo.getAddress(),
+                    allDbInfo.getDistrict(),
+                    allDbInfo.getPhone(),
+                    allDbInfo.getLatitude(),
+                    allDbInfo.getLongitude()));
+            Constants.searchRes.get(Constants.searchRes.size() - 1).addInfo(
+                    medicineName,
+                    allDbInfo.getPrice(),
+                    allDbInfo.getQuantity(),
+                    allDbInfo.getManufacturers()
+            );
+        }
+        else {
+            int index = findIndexToAddMedecine(allDbInfo.getIdPharmacy());
+            if(index != -1) {
+                Constants.searchRes.get(index).addInfo(
+                        medicineName,
+                        allDbInfo.getPrice(),
+                        allDbInfo.getQuantity(),
+                        allDbInfo.getManufacturers()
+                );
+            }
+        }
+    }
+
+    private void addItemToList(String medecineName, MinskInfo minskInfo, Pharmacies pharmacies,
+                               Manufacturers manufacturers, int isFirstAdd){
+        if(isFirstAdd == 0){
+            Constants.searchRes.add(new SearchItem(
+                    minskInfo.getIdPharmacy(),
+                    pharmacies.getPharmacyName(),
+                    pharmacies.getAddress(),
+                    pharmacies.getDistrict(),
+                    pharmacies.getPhone(),
+                    pharmacies.getLatitude(),
+                    pharmacies.getLongitude()));
+            Constants.searchRes.get(Constants.searchRes.size() - 1).addInfo(
+                    medecineName,
+                    minskInfo.getPrice(),
+                    minskInfo.getQuantity(),
+                    manufacturers.getManufacturers()
+            );
+        }
+        else {
+            int index = findIndexToAddMedecine(minskInfo.getIdPharmacy());
+            if(index != -1) {
+                Constants.searchRes.get(index).addInfo(
+                        medecineName,
+                        minskInfo.getPrice(),
+                        minskInfo.getQuantity(),
+                        manufacturers.getManufacturers()
+                );
+            }
+        }
+    }
+
+
+    private int findIndexToAddMedecine(int idPharm){
+        return Constants.searchRes.indexOf(new SearchItem(idPharm));
+    }
+
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        this.citiesController = new CitiesController("");
+        this.manufacturersController = new ManufacturersController();
+        this.medecinesController = new MedecinesController();
+        this.minskInfoController = new MinskInfoController();
+        this.pharmaciesController = new PharmaciesController();
     }
 
     @Override
     protected void onPostExecute(Void result) {
+        int i = 0;
+        List<SearchItem> list = new ArrayList<>();
+        for(SearchItem obj: Constants.searchRes){
+            list.add(obj);
+            if(i++ == 18)
+                break;
+        }
+        Constants.searchRes = new ArrayList<>(list);
         super.onPostExecute(result);
     }
-
-    public PreparedStatement getPrepareStatement(String sql) {
-        PreparedStatement ps = null;
-        try {
-            ps = Constants.connection.prepareStatement(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return ps;
-    }
-
-    public void findInfo(String name) throws SQLException {
-        String command = "select * from bjxwurblbnm1couxsina.MEDECINES where medecine like ?";
-        PreparedStatement preparedStatement = getPrepareStatement(command);
-        preparedStatement.setString(1, "%" + name + "%");
-        //preparedStatement.setString(1, name);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        int id_med;
-        int id_pharm;
-        int id_manuf;
-        int quantity = 0;
-        float price = .0f;
-        if (resultSet.next()) {
-            id_med = resultSet.getInt("ID_MED");
-        }
-        else return;
-        command = "select * from bjxwurblbnm1couxsina.MINSK_INFO where ID_MED = ?";
-        preparedStatement = getPrepareStatement(command);
-        preparedStatement.setInt(1, id_med);
-        resultSet = preparedStatement.executeQuery();
-        if(Constants.searchRes.size() == 0){
-            String pharmName = "";
-            String address = "";
-            String district = "";
-            String phone = "";
-            float longitude = .0f;
-            float latitude = .0f;
-
-            int counter = 0;
-            while (resultSet.next()) {
-                quantity = resultSet.getInt("quantity");
-                price = resultSet.getFloat("price");
-                id_pharm = resultSet.getInt("ID_PHARMACY");
-                id_manuf = resultSet.getInt("ID_MANUF");
-
-////////////
-                String manufacturer = "none";
-
-                command = "select * from bjxwurblbnm1couxsina.MANUFACTURERS where ID_MANUF = ?";
-                preparedStatement = getPrepareStatement(command);
-                preparedStatement.setInt(1, id_manuf);
-                ResultSet items = preparedStatement.executeQuery();
-                if (items.next()) {
-                    manufacturer = items.getString("manufacturer");
-                }
-
-
-                /////////////////////////////
-                command = "select * from bjxwurblbnm1couxsina.PHARMACIES where ID_PHARMACY = ?";
-                preparedStatement = getPrepareStatement(command);
-                preparedStatement.setInt(1, id_pharm);
-                ResultSet resultSet1 = preparedStatement.executeQuery();
-                if(resultSet1.next()) {
-                    pharmName = resultSet1.getString("pharmacy_name");
-                    address = resultSet1.getString("address");
-                    district = resultSet1.getString("district");
-                    phone = resultSet1.getString("phone");
-                    latitude = resultSet1.getFloat("latitude");
-                    longitude = resultSet1.getFloat("longitude");
-
-                    Constants.searchRes.add(new SearchItem(pharmName, address, district, phone,
-                            latitude, longitude));
-                    Constants.searchRes.get(counter).addInfo(name, price, quantity, manufacturer);
-                    counter++;
-                }
-                /////////////////////////////
-
-
-            }
-
-        }
-            else {
-            int counter = 0;
-            while (resultSet.next()) {
-                quantity = resultSet.getInt("quantity");
-                price = resultSet.getFloat("price");
-                id_manuf = resultSet.getInt("ID_MANUF");
-
-////////////
-                String manufacturer = "none";
-
-                command = "select * from bjxwurblbnm1couxsina.MANUFACTURERS where ID_MANUF = ?";
-                preparedStatement = getPrepareStatement(command);
-                preparedStatement.setInt(1, id_manuf);
-                ResultSet items = preparedStatement.executeQuery();
-                if (items.next()) {
-                    manufacturer = items.getString("manufacturer");
-                }
-                if (counter < Constants.searchRes.size()) {
-                    Constants.searchRes.get(counter).addInfo(name, price, quantity, manufacturer);
-                }
-                counter++;
-            }
-        }
-
-    }
-
 }

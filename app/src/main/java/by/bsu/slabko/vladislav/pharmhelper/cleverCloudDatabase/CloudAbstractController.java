@@ -1,30 +1,25 @@
 package by.bsu.slabko.vladislav.pharmhelper.cleverCloudDatabase;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import by.bsu.slabko.vladislav.pharmhelper.AsyncTasks.AsyncGetDataFromDB;
-import by.bsu.slabko.vladislav.pharmhelper.activities.searchResult.objects.SearchItem;
 import by.bsu.slabko.vladislav.pharmhelper.constants.Constants;
 
-public  class AbstractController {
+public abstract class CloudAbstractController<E, K> {
     private Connection connection;
-    public AbstractController(String item_name) {
+
+    public CloudAbstractController() {
         connection = Constants.connection;
-        AsyncGetDataFromDB async = new AsyncGetDataFromDB();
-        async.execute(item_name);
-        try {
-            async.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
+
+    public abstract List<E> getAll();
+    public abstract E getUniqueEntityById(int id);
+    public abstract List<E> getEntityById(int id);
+    public abstract E getEntityByString(String id);
+    public abstract boolean delete(K id);
 
     public PreparedStatement getPrepareStatement(String sql) {
         PreparedStatement ps = null;
@@ -46,6 +41,4 @@ public  class AbstractController {
             }
         }
     }
-
-
 }

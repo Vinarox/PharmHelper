@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -44,6 +45,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+       /* LinearLayout linearLayout = v.findViewById(R.id.sales);
+        View saleView = inflater.inflate(R.layout.sales_container, container, false);
+        ImageView saleImage = saleView.findViewById(R.id.sale_image);
+        saleImage.setImageResource(R.mipmap.sale2);
+        linearLayout.addView(saleImage);
+        linearLayout.addView(saleImage);
+        linearLayout.addView(saleImage);*/
+
+
         /*GridView gvMain = (GridView) v.findViewById(R.id.grid_slot);
        // gvMain.setNumColumns(2);
         View[] boxes = {inflater.inflate(R.layout.infobox, null, false),
